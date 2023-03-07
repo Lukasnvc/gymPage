@@ -1,9 +1,11 @@
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 
+import ActionButton from '@/shared/ActionButton';
 import Link from './Link';
 import Logo from "@/assets/Logo.png";
-import { useState } from "react";
-import { SelectedPage } from "./shared/types";
+import { SelectedPage } from "../../shared/types";
+import useMediaQuery from '@/hooks/useMediaQuery';
+import { useState } from 'react';
 
 type Props = {
   selectedPage: SelectedPage;
@@ -12,6 +14,8 @@ type Props = {
 
 const Navbar = ({selectedPage, setSelectedPage}: Props) => {
   const flexBetween = 'flex items-center justify-between';
+  const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false)
+  const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
   return (
     <nav>
@@ -25,7 +29,7 @@ const Navbar = ({selectedPage, setSelectedPage}: Props) => {
             <img src={Logo} alt="logo" />
 
             {/* right side */}
-            <div
+            {isAboveMediumScreens ? (<div
               className={`${flexBetween} w-full`}>
               <div
                 className={`${flexBetween} gap-8 text-sm`}>
@@ -43,7 +47,7 @@ const Navbar = ({selectedPage, setSelectedPage}: Props) => {
                   page='Benefits'
                   selectedPage={selectedPage}
                   setSelectedPage={setSelectedPage}
-                >
+                />
                 <Link
                     page='Art Classes'
                     selectedPage={selectedPage}
@@ -58,12 +62,23 @@ const Navbar = ({selectedPage, setSelectedPage}: Props) => {
               <div
                 className={`${flexBetween} gap-8`}>
                 <p>Sing In</p>
-                <button>Become a Member</button>
+                <ActionButton setSelectedPage={setSelectedPage}>Become a Member</ActionButton>
               </div>
-            </div>
+            </div>) : ( 
+                <button
+                  className='rounded-full bg-secondary-500 p-2'
+                  onClick={() => setIsMenuToggled(!isMenuToggled)}
+                >
+                  <Bars3Icon className='h-6 w-6 text-white'/>
+                </button>
+            )}
+            
           </div>
         </div>
-        </div>
+      </div>
+      
+      {/* Mobile menu */}
+      {!isAboveMediumScreens && isMenuToggled}
     </nav>
   )
 }
