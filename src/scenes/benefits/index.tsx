@@ -5,7 +5,7 @@ import Benefit from "./benefit";
 import HText from "@/shared/HText";
 import { motion } from "framer-motion";
 
-const benefits: Array<BenefitType> = [
+const array: Array<BenefitType> = [
   {
     icon: <HomeModernIcon className="h-6 w-6" />,
     title: "State of the Art Facilities",
@@ -22,6 +22,13 @@ const benefits: Array<BenefitType> = [
     description: "lorem ipsumk fllkfasdjfl ds afasfasdgsad"
   }
 ]
+
+const container = {
+  hidden: {},
+  visible: {
+    transition: {staggerChildren: 0.2}
+  }
+}
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
@@ -45,8 +52,13 @@ const Benefits = ({setSelectedPage}: Props) => {
           </p>
         </div>
 
-        <div className="md:flex items-center justify-between gap-8 mt-5">
-          {benefits.map((benefit: BenefitType) => (
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={container}
+          className="md:flex items-center justify-between gap-8 mt-5">
+          {array.map((benefit: BenefitType) => (
             <Benefit
               key={benefit.title}
               icon={benefit.icon}
@@ -55,7 +67,7 @@ const Benefits = ({setSelectedPage}: Props) => {
               setSelectedPage={setSelectedPage}
             />
           ))}
-        </div>
+        </motion.div>
     </motion.div>
     </section>
   )
